@@ -8,10 +8,14 @@ import {
 	Input,
 	Button,
 	Text,
+	useToast,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 const Login = () => {
+	const toast = useToast();
+	const toastStatuses = ['success', 'error'];
+
 	return (
 		<Stack
 			className={'stack'}
@@ -52,7 +56,18 @@ const Login = () => {
 							<FormLabel htmlFor='password'>Password</FormLabel>
 							<Input id='password' type='password' />
 						</FormControl>
-						<Button colorScheme='blue' width='100%'>
+						<Button
+							colorScheme='blue'
+							width='100%'
+							onClick={() =>
+								toast({
+									title: `Login Gagal`,
+									description: 'Username atau password salah',
+									status: toastStatuses[1],
+									isClosable: true,
+								})
+							}
+						>
 							Login
 						</Button>
 					</VStack>
