@@ -11,10 +11,27 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
+import Link from 'next/link';
 
 const Login = () => {
 	const toast = useToast();
 	const toastStatuses = ['success', 'error'];
+
+	const generateSessionWithLogin = () => {
+		showToast('error');
+	};
+
+	const showToast = (status) => {
+		toast({
+			title: status === toastStatuses[0] ? 'Login Berhasil' : `Login Gagal`,
+			description:
+				status === toastStatuses[0]
+					? 'Selamat datang di BNCC Movies'
+					: 'Username atau password salah',
+			status: status,
+			isClosable: true,
+		});
+	};
 
 	return (
 		<Stack
@@ -25,18 +42,20 @@ const Login = () => {
 		>
 			<Box flex='1' className='box' bg={'#2B6CB0'}>
 				<Center color={'white'} height={'100%'}>
-					<Button
-						colorScheme='white'
-						variant='link'
-						pos={'absolute'}
-						top={'50'}
-						left={'50'}
-					>
-						<ChevronLeftIcon w={'8'} h={'8'} />
-						<Text display={{ base: 'none', sm: 'block' }}>
-							Kembali ke Beranda
-						</Text>
-					</Button>
+					{/* <Link href='/'> */}
+						<Button
+							colorScheme='white'
+							variant='link'
+							pos={'absolute'}
+							top={'50'}
+							left={'50'}
+						>
+							<ChevronLeftIcon w={'8'} h={'8'} />
+							<Text display={{ base: 'none', sm: 'block' }}>
+								Kembali ke Beranda
+							</Text>
+						</Button>
+					{/* </Link> */}
 					<VStack align={{ base: 'center', sm: 'start' }}>
 						<Text fontSize={'24px'}>Login ke akun</Text>
 						<Text fontSize={'24px'} fontWeight={'bold'}>
@@ -49,8 +68,8 @@ const Login = () => {
 				<Center height={'100%'}>
 					<VStack width={'320px'}>
 						<FormControl>
-							<FormLabel htmlFor='email'>Email address</FormLabel>
-							<Input id='email' type='email' />
+							<FormLabel htmlFor='username'>Username</FormLabel>
+							<Input id='username' type='text' />
 						</FormControl>
 						<FormControl>
 							<FormLabel htmlFor='password'>Password</FormLabel>
@@ -59,14 +78,7 @@ const Login = () => {
 						<Button
 							colorScheme='blue'
 							width='100%'
-							onClick={() =>
-								toast({
-									title: `Login Gagal`,
-									description: 'Username atau password salah',
-									status: toastStatuses[1],
-									isClosable: true,
-								})
-							}
+							onClick={generateSessionWithLogin}
 						>
 							Login
 						</Button>
