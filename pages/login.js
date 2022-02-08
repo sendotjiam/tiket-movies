@@ -81,6 +81,7 @@ const Login = () => {
 				if (data.success) {
 					sessionId = data.session_id;
 					showToast('success');
+					window.localStorage.setItem('session_id', sessionId);
 					router.push('/');
 				}
 			})
