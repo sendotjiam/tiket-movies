@@ -11,18 +11,26 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-// import Link from 'next/link';
 import axios from 'axios';
-import React, { useState } from 'react';
+import sessionId from '../configs';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const Login = () => {
+	const router = useRouter();
 	const toast = useToast();
 	const toastStatuses = ['success', 'error'];
-	const [username, setUsername] = useState();
-	const [password, setPassword] = useState();
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 
 	const baseUrl = 'https://api.themoviedb.org/3';
 	const apiKey = 'f2f499786a0550c8e14677f17079dee1';
+
+	useEffect(() => {
+		if (sessionId) {
+			router.push('/')
+		}
+	}, [])
 
 	const generateRequestToken = async () => {
 		const response = await axios.get(
@@ -35,15 +43,17 @@ const Login = () => {
 		}
 	};
 
-	const generateSessionWithLogin = async () => {
-		console.log(username, password);
-		const token = await generateRequestToken();
+	const generateTokenWithLogin = async () => {
+		if (username.trim() === '' || password.trim() === '') {
+			showToast('error');
+			return;
+		}
+		let token = await generateRequestToken();
 		if (token === null) {
 			showToast('error');
 			return;
 		}
-		console.log(token);
-		axios
+		await axios
 			.post(
 				`${baseUrl}/authentication/token/validate_with_login?api_key=${apiKey}`,
 				{
@@ -53,8 +63,26 @@ const Login = () => {
 				},
 			)
 			.then((response) => {
-				console.log(response);
-				showToast('success');
+				token = response.data.request_token;
+				return generateLoginSession(token);
+			})
+			.catch(function (error) {
+				showToast('error');
+			});
+	};
+
+	const generateLoginSession = async (token) => {
+		await axios
+			.post(`${baseUrl}/authentication/session/new?api_key=${apiKey}`, {
+				request_token: token,
+			})
+			.then((response) => {
+				let data = response.data;
+				if (data.success) {
+					sessionId = data.session_id;
+					showToast('success');
+					router.push('/');
+				}
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -127,7 +155,7 @@ const Login = () => {
 						<Button
 							colorScheme='blue'
 							width='100%'
-							onClick={generateSessionWithLogin}
+							onClick={generateTokenWithLogin}
 						>
 							Login
 						</Button>
