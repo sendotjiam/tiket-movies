@@ -1,6 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { ChakraProvider } from '@chakra-ui/react'
+import Movie from './Movie';
+import Login from './login';
+import React, {useEffect, useState} from 'react';
 import {
 	Box,
 	Text,
@@ -16,6 +19,21 @@ import {
 } from '@chakra-ui/react';
 
 export default function Home() {
+	const BASE_URL = 'https://api.themoviedb.org/3';
+	const API_KEY = '393f424e1635f97da37ea1519f7d1d87';
+	const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=393f424e1635f97da37ea1519f7d1d87';
+
+	const [movies, setMovies] = useState([]);
+
+	useEffect(() => {
+		fetch(API_URL)
+		.then(res => res.json())
+		.then(data => {
+			setMovies(data.results);
+			console.log(data.results);
+		});
+	}, []);
+
 	return (
 		<>
 			<Head>
@@ -46,20 +64,9 @@ export default function Home() {
 			
 			<SimpleGrid minChildWidth={{base: '100%', md: '15%', lg: '15%' , xl: '15%'}} spacing='12px'>
 
-				<LinkBox>
-					<LinkOverlay href = '#'>
-						<Box>
-							<Center>
-								<Image src = 'https://bit.ly/dan-abramov' alt = 'kontol'></Image>
-							</Center>
-							<Center fontSize={'15px'} fontWeight={'bold'} color='white' mt='10px'>
-								Film1
-							</Center>
-						</Box>
-					</LinkOverlay>
-				</LinkBox>
+				{movies.length > 0 && movies.slice(0, 5).map(movie => <Movie key={movie.id} {...movie} />)}
 
-				<LinkBox>
+				{/* <LinkBox>
 					<LinkOverlay href = '#'>
 						<Box>
 							<Center>
@@ -96,9 +103,9 @@ export default function Home() {
 							</Center>
 						</Box>
 					</LinkOverlay>
-				</LinkBox>
+				</LinkBox> */}
 
-				<LinkBox>
+				{/* <LinkBox>
 					<LinkOverlay href = '#'>
 						<Box>
 							<Center>
@@ -109,7 +116,7 @@ export default function Home() {
 							</Center>
 						</Box>
 					</LinkOverlay>
-				</LinkBox>
+				</LinkBox> */}
 				
 			</SimpleGrid>
 			
