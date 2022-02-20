@@ -13,10 +13,11 @@ import {
     Flex,
     Button,
 } from "@chakra-ui/react";
+import Navbar from "../components/navbar"
 
 export default function Home() {
-    const baseURL = "https://api.themoviedb.org/3";
-    const apiKey = "f2f499786a0550c8e14677f17079dee1";
+    const baseURL = process.env.baseURL;
+    const apiKey = process.env.apiKey;
 
     const [sessionId, setSessionId] = useState([]);
     const [movies, setMovies] = useState([]);
@@ -29,32 +30,11 @@ export default function Home() {
             .then((res) => {
                 setMovies(res.data.results);
                 setSessionId(getSessionId());
-                console.log(res.data.results);
             });
     }, [sessionId]);
 
     const getSessionId = () => {
         return window.localStorage.getItem("session_id");
-    };
-
-    const deleteSessionId = () => {
-        window.localStorage.removeItem("session_id");
-        setSessionId(null);
-    };
-
-    const logout = () => {
-        console.log("Logging Out!");
-        axios
-            .delete(`${baseURL}/authentication/session?api_key=${apiKey}`, {
-                data: {
-                    session_id: sessionId,
-                },
-            })
-            .then((res) => {
-                console.log(res);
-                deleteSessionId();
-            })
-            .catch((err) => console.log(err));
     };
 
     return (
@@ -66,34 +46,7 @@ export default function Home() {
             </Head>
 
             <main>
-                <Box
-                    d="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    pl="20"
-                    pr="20"
-                    pt="5"
-                    pb="5"
-                >
-                    <Box>
-                        <Text
-                            fontSize={"20px"}
-                            fontWeight={"bold"}
-                            color={"blue.600"}
-                        >
-                            BNCC X Tiket Movies
-                        </Text>
-                    </Box>
-                    <Box>
-                        {!sessionId ? (
-                            <Link href="/login">
-                                <a>Login</a>
-                            </Link>
-                        ) : (
-                            <a onClick={logout}>Logout</a>
-                        )}
-                    </Box>
-                </Box>
+                <Navbar />
 
                 <Box pl="20" pr="20" pt="10" pb="10" bg={"blue.600"}>
                     <Text fontSize={"30px"} fontWeight={"bold"} color="white">

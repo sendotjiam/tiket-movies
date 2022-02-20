@@ -113,20 +113,19 @@ const Login = () => {
         >
             <Box flex="1" className="box" bg={"#2B6CB0"}>
                 <Center color={"white"} height={"100%"}>
-                    {/* <Link href='/'> */}
                     <Button
                         colorScheme="white"
                         variant="link"
                         pos={"absolute"}
                         top={"50"}
                         left={"50"}
+                        onClick={() => router.back()}
                     >
                         <ChevronLeftIcon w={"8"} h={"8"} />
                         <Text display={{ base: "none", sm: "block" }}>
                             Kembali ke Beranda
                         </Text>
                     </Button>
-                    {/* </Link> */}
                     <VStack align={{ base: "center", sm: "start" }}>
                         <Text fontSize={"24px"}>Login ke akun</Text>
                         <Text fontSize={"24px"} fontWeight={"bold"}>
