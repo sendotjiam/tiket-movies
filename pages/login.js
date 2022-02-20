@@ -23,8 +23,8 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const baseUrl = "https://api.themoviedb.org/3";
-    const apiKey = "f2f499786a0550c8e14677f17079dee1";
+    const baseUrl = process.env.baseURL;
+    const apiKey = process.env.apiKey;
 
     useEffect(() => {
         if (sessionId) {
