@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Navbar from '../../components/navbar';
 
-const detail = () => {
+const Detail = () => {
 	const baseUrl = process.env.baseURL;
 	const apiKey = process.env.apiKey;
 
@@ -89,7 +89,7 @@ const detail = () => {
 
 	return (
 		<>
-            <Navbar/>
+			<Navbar />
 			<Box mt='64px'>
 				<Container maxW='container.lg'>
 					<Flex justifyContent='space-between'>
@@ -99,7 +99,7 @@ const detail = () => {
 								objectFit='cover'
 								maxWidth='300px'
 								src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`}
-								// Ini load nya lama banget
+								alt={'image'}
 							/>
 						</Box>
 						<Box ml={'80px'}>
@@ -151,7 +151,7 @@ const detail = () => {
 						<Flex justifyContent='space-between'>
 							{castData.slice(0, 6).map((cast) => {
 								return (
-									<Container>
+									<Container key={cast.id}>
 										<Box
 											maxW='sm'
 											height='280px'
@@ -161,6 +161,7 @@ const detail = () => {
 										>
 											<Image
 												src={`https://www.themoviedb.org/t/p/w138_and_h175_face${cast.profile_path}`}
+												alt={'image'}
 											/>
 											<Text fontWeight='700'>{cast.name}</Text>
 											<Text>{cast.character}</Text>
