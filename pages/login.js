@@ -14,6 +14,7 @@ import { ChevronLeftIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import sessionId from "../config";
 
 const Login = () => {
     const router = useRouter();
@@ -21,16 +22,19 @@ const Login = () => {
     const toastStatuses = ["success", "error"];
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [sessionId, setSessionId] = useState(null)
 
     const baseUrl = process.env.baseURL;
     const apiKey = process.env.apiKey;
 
     useEffect(() => {
-        if (sessionId) {
+        if (getSessionId()) {
             router.push("/");
         }
     }, []);
+
+    const getSessionId = () => {
+        return window.localStorage.getItem("session_id");
+    };
 
     const generateRequestToken = async () => {
         const response = await axios.get(
@@ -79,7 +83,7 @@ const Login = () => {
             .then((response) => {
                 let data = response.data;
                 if (data.success) {
-                    setSessionId(data.session_id);
+                    sessionId = data.session_id;
                     showToast("success");
                     window.localStorage.setItem("session_id", sessionId);
                     router.push("/");

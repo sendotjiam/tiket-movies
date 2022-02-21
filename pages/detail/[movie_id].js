@@ -27,7 +27,6 @@ const Detail = () => {
         axios
             .get(`${baseUrl}/movie/${movie_id}?api_key=${apiKey}`)
             .then((res) => {
-                console.log(res.data);
                 setMovieData(res.data);
                 checkMovieFavorite(res.data.id);
             })
@@ -35,7 +34,6 @@ const Detail = () => {
         axios
             .get(`${baseUrl}/movie/${movie_id}/credits?api_key=${apiKey}`)
             .then((res) => {
-                console.log(res.data.cast);
                 setCastData(res.data.cast);
             })
             .catch((err) => console.log(err));
@@ -51,7 +49,6 @@ const Detail = () => {
     };
 
     const checkMovieFavorite = (movie_id) => {
-        // ini bukan pure punction
         if (!getSessionId()) {
             setMovieIsFavorite(false);
         }

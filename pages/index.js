@@ -13,7 +13,7 @@ import {
     Flex,
     Button,
 } from "@chakra-ui/react";
-import Navbar from "../components/navbar"
+import Navbar from "../components/navbar";
 
 export default function Home() {
     const baseURL = process.env.baseURL;
